@@ -9,4 +9,10 @@ router.get("/apikey/razorpay", (req, res) => {
   });
 });
 
+router.get("/apikey/sendgrid", (req, res) => {
+  res.send({
+    api_key: process.env.SENDGRID_API,
+  });
+});
+
 module.exports = router;
