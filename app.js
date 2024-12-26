@@ -1,11 +1,16 @@
 require("dotenv").config();
 
 const express = require("express");
+const connectDB = require("./config/db");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+// Connect to the database
+connectDB();
+
 // Import routes
+const authRoutes = require("./routes/authRoutes");
 const apiKeyRoutes = require("./routes/apikeyRoutes");
 
 // Access environment variables
@@ -18,11 +23,7 @@ app.use(bodyParser.json());
 // Use cors middleware
 app.use(cors()); // Enables CORS for all routes
 
-// Define a route
-app.get("/", (req, res) => {
-  res.send("Hello, World!");
-});
-
+app.use("/auth", authRoutes);
 app.use("/api", apiKeyRoutes);
 
 // Start the server
