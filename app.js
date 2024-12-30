@@ -12,6 +12,9 @@ connectDB();
 // Import routes
 const authRoutes = require("./routes/authRoutes");
 const apiKeyRoutes = require("./routes/apikeyRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const memberRoutes = require("./routes/memberRoutes");
+const addressRoutes = require("./routes/addressRoutes");
 
 // Access environment variables
 const port = process.env.PORT || 5000;
@@ -25,6 +28,9 @@ app.use(cors()); // Enables CORS for all routes
 
 app.use("/auth", authRoutes);
 app.use("/api", apiKeyRoutes);
+app.use("/api/profile", profileRoutes);
+app.use("/api/member", memberRoutes);
+app.use("/api/address", addressRoutes);
 
 // Start the server
 app.listen(port, () => {

@@ -5,8 +5,7 @@ const User = require("../models/User");
 const secretKey = process.env.SECRET_KEY || "mahadev";
 
 exports.registerUser = async (req, res) => {
-  const { name, email, password, confirmPassword, dob, contact, gender } =
-    req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   // Check if passwords match
   if (password !== confirmPassword) {
@@ -32,9 +31,6 @@ exports.registerUser = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      dob,
-      contact,
-      gender,
     });
 
     // Save the user to the database
@@ -91,5 +87,30 @@ exports.loginUser = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
+  }
+};
+
+exports.getUser = async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+    // Fetch user by userId
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User profile fetched successfully",
+      user,
+    });
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 };
