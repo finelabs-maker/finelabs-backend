@@ -57,17 +57,13 @@ exports.getMembers = async (req, res) => {
     // Fetch all member data based on userId
     const members = await Member.find({ userId });
 
-    if (!members || members.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No members found for the given userId.",
-      });
-    }
-
-    // Return success response with all member data
+    // Return success response, even if no members are found
     res.status(200).json({
       success: true,
-      message: "Members fetched successfully.",
+      message:
+        members.length > 0
+          ? "Members fetched successfully."
+          : "No members found for the given userId.",
       members,
     });
   } catch (error) {

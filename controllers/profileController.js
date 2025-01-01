@@ -25,14 +25,6 @@ exports.createProfile = async (req, res) => {
   } catch (error) {
     console.error("Error creating profile:", error);
 
-    // Handle duplicate email or userId error
-    if (error.code === 11000) {
-      return res.status(400).json({
-        success: false,
-        message: "Email or userId already exists",
-      });
-    }
-
     res.status(500).json({
       success: false,
       message: "Server error",

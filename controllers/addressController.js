@@ -44,7 +44,7 @@ exports.createAddress = async (req, res) => {
 
 // Get all addresses
 exports.getAddress = async (req, res) => {
-  const { userId } = req.query; // Use req.query instead of req.params
+  const { userId } = req.query;
 
   // Validate that the userId is provided
   if (!userId) {
@@ -58,17 +58,13 @@ exports.getAddress = async (req, res) => {
     // Find all addresses for the given userId
     const addresses = await Address.find({ userId });
 
-    if (addresses.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No addresses found for the given user.",
-      });
-    }
-
-    // Return success response with the fetched addresses
+    // Return success response, even if no addresses are found
     res.status(200).json({
       success: true,
-      message: "Addresses fetched successfully.",
+      message:
+        addresses.length > 0
+          ? "Addresses fetched successfully."
+          : "No addresses found for the given user.",
       addresses,
     });
   } catch (error) {
